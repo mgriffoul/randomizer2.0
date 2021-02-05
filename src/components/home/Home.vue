@@ -1,12 +1,18 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="src/commons/img/logo.png" />
+    <Header />
+    <Test />
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import Header from "../header/Header.vue";
+import Randomizer from "@/components/randomizer/Randomizer.vue";
 
-@Options({})
+@Options({
+  components: { Header, Randomizer },
+  name: "Home"
+})
 export default class Home extends Vue {}
 </script>
