@@ -1,0 +1,34 @@
+img {
+  height: 45px;
+}
+
+.randomize-button {
+  background-color: $extra-color;
+  color: $secondary-color;
+  height: 40px;
+  min-width: 200px;
+  margin: $primary-top-space auto 0 auto;
+  border: none;
+  border-radius: 15px;
+}
+ul {
+  list-style: none;
+
+  .player {
+    display: flex;
+    margin-top: $secondary-top-space;
+    .name {
+      font-size: 25px;
+      margin-left: $primary-left-space;
+    }
+  }
+}
+.blink_me {
+  animation: blinker 6s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}

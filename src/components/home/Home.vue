@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Header />
-    <Test />
+    <Randomizer />
   </div>
 </template>
 
