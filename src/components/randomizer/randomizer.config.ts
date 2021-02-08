@@ -5,91 +5,91 @@ export class RandomizerConfig {
     return [
       {
         firstName: "Charles",
-        avatar: "@/commons/img/avatar/charles.png",
+        avatarFileName: "charles.png",
         presence: true,
         order: 0
       },
       {
         firstName: "Anthony",
-        avatar: "@/commons/img/avatar/charles.png",
+        avatarFileName: "anthony.png",
         presence: true,
         order: 0
       },
       {
         firstName: "Benoit",
-        avatar: "@/commons/img/avatar/charles.png",
+        avatarFileName: "benoit.png",
         presence: true,
         order: 0
       },
       {
         firstName: "Benjamin",
-        avatar: "@/commons/img/avatar/charles.png",
+        avatarFileName: "benjamin.png",
         presence: true,
         order: 0
       },
       {
         firstName: "Christophe",
-        avatar: "@/commons/img/avatar/charles.png",
+        avatarFileName: "christophe.png",
         presence: true,
         order: 0
       },
       {
         firstName: "Geoffrey",
-        avatar: "@/commons/img/avatar/charles.png",
+        avatarFileName: "geoffrey.png",
         presence: true,
         order: 0
       },
       {
         firstName: "Jimmy",
-        avatar: "@/commons/img/avatar/charles.png",
+        avatarFileName: "jimmy.png",
         presence: true,
         order: 0
       },
       {
         firstName: "Julien",
-        avatar: "@/commons/img/avatar/charles.png",
+        avatarFileName: "julien.png",
         presence: true,
         order: 0
       },
       {
         firstName: "Mathieu",
-        avatar: "@/commons/img/avatar/charles.png",
+        avatarFileName: "mathieu.jpg",
         presence: true,
         order: 0
       },
       {
         firstName: "Minh",
-        avatar: "@/commons/img/avatar/charles.png",
+        avatarFileName: "minh.jpg",
         presence: true,
         order: 0
       },
       {
         firstName: "Ouzzin",
-        avatar: "@/commons/img/avatar/charles.png",
+        avatarFileName: "ouzzin.png",
         presence: true,
         order: 0
       },
       {
-        firstName: "Tristan / Hugo / Rémi",
-        avatar: "@/commons/img/avatar/charles.png",
+        firstName: "Rémi / Tristan / Hugo",
+        avatarFileName: "pos.png",
         presence: true,
         order: 0
       },
       {
         firstName: "Regis",
-        avatar: "@/commons/img/avatar/charles.png",
+        avatarFileName: "regis.png",
         presence: true,
         order: 0
       },
       {
         firstName: "Serge",
-        avatar: "@/commons/img/avatar/charles.png",
+        avatarFileName: "serge.png",
         presence: true,
         order: 0
       },
       {
         firstName: "William",
-        avatar: "@/commons/img/avatar/charles.png",
+        avatarFileName: "william.png",
         presence: true,
         order: 0
       }

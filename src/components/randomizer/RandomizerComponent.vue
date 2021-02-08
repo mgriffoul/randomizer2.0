@@ -7,7 +7,7 @@
       <li v-for="teamMember in teamMemberList" :key="teamMember.id">
         <TeamMember
           :firstName="teamMember.firstName"
-          :avatarSrc="teamMember.avatar"
+          :avatarFileName="teamMember.avatarFileName"
         />
       </li>
     </ul>

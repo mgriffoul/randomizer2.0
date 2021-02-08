@@ -1,9 +1,6 @@
 <template>
   <div class="team-member">
-    <img
-      class="avatar"
-      src="'@/commons/img/avatar/' + {{ firstName }} + '.png'"
-    />
+    <img class="avatar" :src="require(`@/assets/avatar/${avatarFileName}`)" />
     <span class="first-name">{{ firstName }}</span>
   </div>
 </template>
@@ -13,17 +10,13 @@ import { Options, Vue } from "vue-class-component";
 
 class TeamMemberProps {
   firstName = "";
-  avatarSrc = "";
+  avatarFileName = "";
 }
 
 @Options({})
-export default class TeamMemberComponent extends Vue.with(TeamMemberProps) {
-  mounted() {
-    console.log(this.avatarSrc);
-  }
-}
+export default class TeamMemberComponent extends Vue.with(TeamMemberProps) {}
 </script>
 
-<style>
+<style lang="scss">
 @import "./_team-member.scss";
 </style>
