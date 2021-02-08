@@ -75,7 +75,7 @@ export class TeamConfig {
         order: 0
       },
       {
-        firstName: "Rémi / Tristan / Hugo",
+        firstName: "Rémi/Tristan/Hugo",
         avatarFileName: "pos.png",
         presence: true,
         order: 0

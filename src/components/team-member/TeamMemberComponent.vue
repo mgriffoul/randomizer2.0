@@ -1,6 +1,10 @@
 <template>
   <div class="team-member">
-    <img class="avatar" :src="require(`@/assets/avatar/${avatarFileName}`)" />
+    <img
+      class="avatar"
+      :src="require(`@/assets/avatar/${avatarFileName}`)"
+      :alt="firstName"
+    />
     <span class="first-name">{{ firstName }}</span>
   </div>
 </template>

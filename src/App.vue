@@ -12,13 +12,13 @@ export default class App extends Vue {}
 </script>
 
 <style lang="scss">
-@import url("https://fonts.googleapis.com/css?family=VT323");
+@import url("https://fonts.googleapis.com/css2?family=Fredoka+One&family=Indie+Flower&display=swap");
 
 html {
   background-color: $primary-color;
 }
 #app {
-  font-family: VT323, Helvetica, Arial, sans-serif;
+  font-family: "Indie Flower", cursive, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

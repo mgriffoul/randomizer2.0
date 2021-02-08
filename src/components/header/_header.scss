@@ -1,0 +1,22 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: $secondary-color;
+  font-size: 30px;
+  text-transform: uppercase;
+
+  .title {
+    display: flex;
+    .copyright {
+      font-size: 35px;
+      align-self: flex-start;
+    }
+  }
+
+}
+
+img {
+  height: 45px;
+}

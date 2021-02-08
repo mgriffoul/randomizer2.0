@@ -1,7 +1,7 @@
 <template>
   <div class="randomizer">
     <button class="randomize-button" @click="randomize">
-      <span class="blink_me">RANDOMIZE =></span>
+      <span class="blink_me">GO RANDOM</span>
     </button>
     <ul>
       <li v-for="teamMember in teamMemberList" :key="teamMember.id">
