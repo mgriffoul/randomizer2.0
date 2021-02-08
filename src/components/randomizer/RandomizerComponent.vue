@@ -5,7 +5,10 @@
     </button>
     <ul>
       <li v-for="teamMember in teamMemberList" :key="teamMember.id">
-        <span> {{ teamMember.firstName }} </span>
+        <TeamMember
+          :firstName="teamMember.firstName"
+          :avatarSrc="teamMember.avatar"
+        />
       </li>
     </ul>
   </div>
@@ -13,11 +16,16 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import { TeamMember } from "@/components/randomizer/TeamMember";
 import { RandomizerConfig } from "@/components/randomizer/randomizer.config";
+import TeamMemberComponent from "@/components/team-member/TeamMemberComponent.vue";
+import { TeamMember } from "@/components/model/TeamMember";
 
-@Options({})
-export default class Randomizer extends Vue {
+@Options({
+  components: {
+    TeamMember: TeamMemberComponent
+  }
+})
+export default class RandomizerComponent extends Vue {
   teamMemberList: TeamMember[] = [];
 
   mounted() {

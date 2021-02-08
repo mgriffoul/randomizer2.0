@@ -1,0 +1,11 @@
+.team-member {
+  display: flex;
+  margin-top: $secondary-top-space;
+  .first-name {
+    font-size: 25px;
+    margin-left: $primary-left-space;
+  }
+  img {
+    height: 45px;
+  }
+}
