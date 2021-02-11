@@ -1,13 +1,24 @@
 <template>
   <div class="randomizer">
-    <button class="randomize-button" @click="randomize">
-      <span class="blink_me">GO RANDOM</span>
-    </button>
+    <div class="navigation">
+      <img
+        :src="require('@/assets/back-arrow.svg')"
+        v-if="isAppReady"
+        @click="handleClickBack"
+        alt="back-arrow"
+      />
+      <button class="randomize-button" @click="handleClick">
+        <span class="blink_me">{{ getButtonLabel }}</span>
+      </button>
+    </div>
     <ul>
-      <li v-for="teamMember in teamMemberList" :key="teamMember.id">
-        <TeamMember
+      <li v-for="teamMember in team" :key="teamMember.id">
+        <TeamMemberComponent
+          @check="handleCheckEvent($event)"
           :firstName="teamMember.firstName"
           :avatarFileName="teamMember.avatarFileName"
+          :presence="teamMember.presence"
+          :id="teamMember.id"
         />
       </li>
     </ul>
@@ -15,66 +26,109 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { defineComponent } from "vue";
 import { TeamConfig, TeamMember } from "@/team.config";
+import { useStore } from "@/store";
 import TeamMemberComponent from "@/components/team-member/TeamMemberComponent.vue";
+import { Step } from "@/store/state";
+import { MutationType } from "@/store/mutations";
+import { mapGetters, mapMutations } from "vuex";
 
-@Options({
+export default defineComponent({
+  name: "RandomizerComponent",
+
   components: {
-    TeamMember: TeamMemberComponent
-  }
-})
-export default class RandomizerComponent extends Vue {
-  teamMemberList: TeamMember[] = [];
-  ticksNumber = 0;
+    TeamMemberComponent
+  },
 
-  beforeCreate() {
-    this.teamMemberList = new TeamConfig().getTeamMemberList();
-  }
+  data() {
+    return {
+      team: [] as TeamMember[],
+      ticksNumber: 0
+    };
+  },
 
-  async randomize(): Promise<void> {
-    this.ticksNumber = 1;
-    setTimeout(this.manageTicks, 1000);
-  }
+  created() {
+    this.team = this.fetchTeam();
+  },
 
-  private manageTicks() {
-    this.calculateNewOrder();
-    this.$nextTick(() => {
-      console.log("$nextTick ", this.ticksNumber);
+  methods: {
+    fetchTeam(): TeamMember[] {
+      return localStorage.getItem("TEAM")
+        ? (JSON.parse(localStorage.getItem("TEAM") as string) as TeamMember[])
+        : TeamConfig.getTeam();
+    },
+
+    randomize(): void {
+      this.ticksNumber = 1;
+      setTimeout(this.manageTicks, 1000);
+    },
+
+    manageTicks(): void {
+      this.calculateNewOrder();
       if (this.ticksNumber <= 120) {
         setTimeout(this.manageTicks, 700 / this.ticksNumber);
       } else {
         return;
       }
       this.ticksNumber++;
-    });
-  }
+    },
 
-  private calculateNewOrder() {
-    console.log("calculate ", this.ticksNumber);
-    const minIndex = Math.ceil(1);
-    const maxIndex = Math.floor(this.teamMemberList.length);
-    const attributedIndexes: number[] = [];
+    calculateNewOrder(): void {
+      console.log("calculate ", this.ticksNumber);
+      const minIndex = Math.ceil(1);
+      const maxIndex = Math.floor(this.team.length);
+      const attributedIndexes: number[] = [];
 
-    while (attributedIndexes.length < this.teamMemberList.length) {
-      const currentIndex =
-        Math.floor(Math.random() * (maxIndex - minIndex + 1)) + minIndex;
-      if (!attributedIndexes.includes(currentIndex)) {
-        attributedIndexes.push(currentIndex);
+      while (attributedIndexes.length < this.team.length) {
+        const currentIndex =
+          Math.floor(Math.random() * (maxIndex - minIndex + 1)) + minIndex;
+        if (!attributedIndexes.includes(currentIndex)) {
+          attributedIndexes.push(currentIndex);
+        }
       }
-    }
-    let count = 0;
-    this.teamMemberList.forEach(teamMember => {
-      teamMember.order = attributedIndexes[count];
-      count++;
-    });
-    this.teamMemberList.sort(this.compare);
-  }
+      let count = 0;
+      this.team.forEach((teamMember: { order: number }) => {
+        teamMember.order = attributedIndexes[count];
+        count++;
+      });
+      this.team.sort(this.compare);
+    },
 
-  private compare(first: TeamMember, second: TeamMember) {
-    return first.order - second.order;
+    compare(first: TeamMember, second: TeamMember): number {
+      return first.order - second.order;
+    },
+
+    handleClick(): void {
+      const store = useStore();
+      if (store.state.step === Step.ready) {
+        this.randomize();
+      } else {
+        store.commit(MutationType.SetReady);
+      }
+    },
+
+    handleCheckEvent(value: { id: number; isPresent: boolean }) {
+      const modifiedTeamMember = this.team.filter(
+        value1 => value1.id === value.id
+      )[0];
+      modifiedTeamMember.presence = value.isPresent;
+    },
+
+    handleClickBack() {
+      this.SET_NOT_READY();
+    },
+
+    ...mapMutations(["SET_NOT_READY"])
+  },
+  computed: {
+    ...mapGetters(["isAppReady"]),
+    getButtonLabel(): string {
+      if (this.isAppReady) return "GO RANDOMIZE";
+      else return "TEAM READY";
+    }
   }
-}
+});
 </script>
 
 <style lang="scss">

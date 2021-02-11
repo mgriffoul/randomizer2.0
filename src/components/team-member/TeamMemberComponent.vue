@@ -1,5 +1,13 @@
 <template>
-  <div class="team-member">
+  <div class="team-member" v-if="shouldDisplayMember">
+    <label>
+      <input
+        type="checkbox"
+        v-model="isPresent"
+        @click="handleCheck"
+        v-show="!isAppReady"
+      />
+    </label>
     <img
       class="avatar"
       :src="require(`@/assets/avatar/${avatarFileName}`)"
@@ -10,15 +18,42 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { defineComponent } from "vue";
+import { mapGetters } from "vuex";
 
-class TeamMemberProps {
-  firstName = "";
-  avatarFileName = "";
-}
-
-@Options({})
-export default class TeamMemberComponent extends Vue.with(TeamMemberProps) {}
+export default defineComponent({
+  name: "TeamMemberComponent",
+  data: function() {
+    return {
+      isPresent: this.presence as boolean
+    };
+  },
+  emits: {
+    check(payload: { id: number; isPresent: boolean }) {
+      return payload;
+    }
+  },
+  props: {
+    presence: { type: Boolean, required: true },
+    firstName: { type: String, required: true },
+    avatarFileName: { type: String, required: true },
+    id: { type: Number, required: true }
+  },
+  methods: {
+    handleCheck(): void {
+      this.$emit("check", { id: this.id, isPresent: !this.isPresent });
+    }
+  },
+  computed: {
+    shouldDisplayMember(): boolean {
+      if (!this.isAppReady) {
+        return true;
+      }
+      return this.isPresent;
+    },
+    ...mapGetters(["isAppReady"])
+  }
+});
 </script>
 
 <style lang="scss">

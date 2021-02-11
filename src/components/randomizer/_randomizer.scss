@@ -1,23 +1,32 @@
 .randomizer {
-  .randomize-button {
-    background-color: $extra-color;
-    color: $secondary-color;
-    height: 40px;
-    min-width: 200px;
-    margin: $primary-top-space auto 0 auto;
-    border: none;
-    border-radius: 15px;
-  }
-  ul {
-    list-style: none;
-  }
-  .blink_me {
-    animation: blinker 2s linear infinite;
-  }
+  .navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  @keyframes blinker {
-    50% {
-      opacity: 0;
+    .randomize-button {
+      background-color: $extra-color;
+      color: $secondary-color;
+      height: 40px;
+      min-width: 200px;
+      margin-top: $primary-top-space;
+      margin-left: $primary-left-space;
+      border: none;
+      border-radius: 15px;
     }
   }
+    ul {
+      list-style: none;
+    }
+
+    .blink_me {
+      animation: blinker 2s linear infinite;
+    }
+
+    @keyframes blinker {
+      50% {
+        opacity: 0;
+      }
+    }
+
 }
