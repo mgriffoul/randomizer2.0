@@ -28,11 +28,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { TeamConfig, TeamMember } from "@/team.config";
-import { useStore } from "@/store";
 import TeamMemberComponent from "@/components/team-member/TeamMemberComponent.vue";
-import { Step } from "@/store/state";
-import { MutationType } from "@/store/mutations";
-import { mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default defineComponent({
   name: "RandomizerComponent",
@@ -100,11 +97,10 @@ export default defineComponent({
     },
 
     handleClick(): void {
-      const store = useStore();
-      if (store.state.step === Step.ready) {
+      if (this.isAppReady) {
         this.randomize();
       } else {
-        store.commit(MutationType.SetReady);
+        this.SET_APP_READY_ACTION(this.team);
       }
     },
 
@@ -112,14 +108,17 @@ export default defineComponent({
       const modifiedTeamMember = this.team.filter(
         value1 => value1.id === value.id
       )[0];
+      console.log(value.isPresent);
       modifiedTeamMember.presence = value.isPresent;
+      console.log(this.team);
     },
 
     handleClickBack() {
-      this.SET_NOT_READY();
+      this.SET_APP_NOT_READY_MUTATION();
     },
 
-    ...mapMutations(["SET_NOT_READY"])
+    ...mapMutations(["SET_APP_NOT_READY_MUTATION"]),
+    ...mapActions(["SET_APP_READY_ACTION"])
   },
   computed: {
     ...mapGetters(["isAppReady"]),

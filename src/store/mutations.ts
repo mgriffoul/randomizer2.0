@@ -3,26 +3,26 @@ import { State, Step } from "@/store/state";
 import { TeamMember } from "@/team.config";
 
 export enum MutationType {
-  SetReady = "SET_READY",
-  SetNotReady = "SET_NOT_READY",
-  UpdateTeam = "UPDATE_TEAM"
+  setAppReadyMutation = "SET_APP_READY_MUTATION",
+  updateTeamMutation = "UPDATE_TEAM_MUTATION",
+  setAppNotReadyMutation = "SET_APP_NOT_READY_MUTATION"
 }
 
 export type Mutations = {
-  [MutationType.SetReady](state: State): void;
-  [MutationType.UpdateTeam](state: State, team: TeamMember[]): void;
-  [MutationType.SetNotReady](state: State): void;
+  [MutationType.setAppNotReadyMutation](state: State): void;
+  [MutationType.updateTeamMutation](state: State, team: TeamMember[]): void;
+  [MutationType.setAppReadyMutation](state: State): void;
 };
 
 export const mutations: MutationTree<State> & Mutations = {
-  [MutationType.SetReady](state: State) {
-    state.step = Step.ready;
-    localStorage.setItem("TEAM", JSON.stringify(state.team));
-  },
-  [MutationType.UpdateTeam](state: State, team: TeamMember[]) {
+  [MutationType.updateTeamMutation](state, team) {
+    localStorage.setItem("TEAM", JSON.stringify(team));
     state.team = team;
   },
-  [MutationType.SetNotReady](state: State) {
+  [MutationType.setAppReadyMutation](state) {
+    state.step = Step.ready;
+  },
+  [MutationType.setAppNotReadyMutation](state) {
     state.step = Step.settingPresence;
   }
 };
