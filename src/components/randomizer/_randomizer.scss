@@ -5,28 +5,19 @@
     align-items: center;
 
     .randomize-button {
-      background-color: $extra-color;
-      color: $secondary-color;
+      background-color: $beige;
+      color: black;
       height: 40px;
       min-width: 200px;
       margin-top: $primary-top-space;
       margin-left: $primary-left-space;
-      border: none;
+      border: 1px solid $deep-green;
       border-radius: 15px;
     }
   }
     ul {
       list-style: none;
-    }
-
-    .blink_me {
-      animation: blinker 2s linear infinite;
-    }
-
-    @keyframes blinker {
-      50% {
-        opacity: 0;
-      }
+      color: $light-green;
     }
 
 }

@@ -1,14 +1,14 @@
 <template>
   <div class="team-member" v-if="shouldDisplayMember">
-    <label>
-      <input type="checkbox" v-model="isPresent" v-show="!isAppReady" />
-    </label>
     <img
       class="avatar"
       :src="require(`@/assets/avatar/${avatarFileName}`)"
       :alt="firstName"
     />
     <span class="first-name">{{ firstName }}</span>
+    <label>
+      <input type="checkbox" v-model="isPresent" v-show="!isAppReady" />
+    </label>
   </div>
 </template>
 

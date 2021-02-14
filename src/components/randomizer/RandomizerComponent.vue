@@ -8,7 +8,7 @@
         alt="back-arrow"
       />
       <button class="randomize-button" @click="handleClick">
-        <span class="blink_me">{{ getButtonLabel }}</span>
+        <span>{{ getButtonLabel }}</span>
       </button>
     </div>
     <ul>
@@ -57,8 +57,6 @@ export default {
     onMounted(() => {
       state.team = teamMemberRepository.fetchTeam();
     });
-
-    console.log("after fetch", state.team);
 
     const isAppReady = computed(() => {
       return store.getters.IS_APP_READY;

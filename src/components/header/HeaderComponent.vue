@@ -1,8 +1,7 @@
 <template>
   <div class="header">
     <div class="title">
-      <span class="title-label">Dsm Randomizer </span
-      ><span class="copyright">&copy;</span>
+      <span class="title-label">Dsm Randomizer </span>
     </div>
   </div>
 </template>

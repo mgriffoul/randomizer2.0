@@ -3,12 +3,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: $secondary-color;
+  color: black;
   font-size: 30px;
   text-transform: uppercase;
 
   .title {
     display: flex;
+    color: white;
     .copyright {
       font-size: 35px;
       align-self: flex-start;
