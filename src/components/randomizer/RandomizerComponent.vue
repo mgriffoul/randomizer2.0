@@ -3,7 +3,7 @@
     <div class="navigation">
       <img
         :src="require('@/assets/back-arrow.svg')"
-        v-if="IS_APP_READY"
+        v-if="isAppReady"
         @click="handleClickBack"
         alt="back-arrow"
       />
@@ -26,62 +26,79 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { TeamMember } from "@/team.config";
+import { onMounted, computed, reactive, toRefs } from "vue";
 import TeamMemberComponent from "@/components/team-member/TeamMemberComponent.vue";
-import { mapActions, mapGetters, mapMutations } from "vuex";
 import TeamMemberRepository from "@/commons/repositories/TeamMemberRepository";
 import RandomizeService from "@/components/randomizer/RandomizeService";
+import { useStore } from "@/store";
+import { MutationType } from "@/store/mutations";
+import { ActionTypes } from "@/store/actions";
+import { TeamMember } from "@/team.config";
 
-const teamMemberRepository = new TeamMemberRepository();
-const randomizeService = new RandomizeService();
+interface State {
+  team: TeamMember[];
+}
 
-export default defineComponent({
+export default {
   name: "RandomizerComponent",
   components: {
     TeamMemberComponent
   },
-  data() {
-    return {
-      team: [] as TeamMember[]
-    };
-  },
-  mounted() {
-    this.team = teamMemberRepository.fetchTeam();
-  },
-  methods: {
-    handleClick(): void {
-      if (this.IS_APP_READY) {
-        randomizeService.randomize(this.team);
-      } else {
-        this.SET_APP_READY_ACTION(this.team);
-      }
-    },
+  setup() {
+    const teamMemberRepository = new TeamMemberRepository();
+    const randomizeService = new RandomizeService();
 
-    handleCheckEvent(value: { id: number; isPresent: boolean }) {
-      const modifiedTeamMember = this.team.filter(
+    const state: State = reactive({
+      team: []
+    });
+
+    const store = useStore();
+
+    onMounted(() => {
+      state.team = teamMemberRepository.fetchTeam();
+    });
+
+    console.log("after fetch", state.team);
+
+    const isAppReady = computed(() => {
+      return store.getters.IS_APP_READY;
+    });
+    const getButtonLabel = computed(() => {
+      if (isAppReady.value) return "GO RANDOMIZE";
+      else return "TEAM READY";
+    });
+
+    const handleClick = (): void => {
+      if (isAppReady.value) {
+        randomizeService.randomize(state.team);
+      } else {
+        store.dispatch(ActionTypes.SetAppReadyAction, state.team);
+      }
+    };
+
+    const handleCheckEvent = (value: {
+      id: number;
+      isPresent: boolean;
+    }): void => {
+      const modifiedTeamMember = state.team.filter(
         value1 => value1.id === value.id
       )[0];
-      console.log(value.isPresent);
       modifiedTeamMember.presence = value.isPresent;
-      console.log(this.team);
-    },
+    };
+    const handleClickBack = () => {
+      store.commit(MutationType.setAppNotReadyMutation);
+    };
 
-    handleClickBack() {
-      this.SET_APP_NOT_READY_MUTATION();
-    },
-
-    ...mapMutations(["SET_APP_NOT_READY_MUTATION"]),
-    ...mapActions(["SET_APP_READY_ACTION"])
-  },
-  computed: {
-    ...mapGetters(["IS_APP_READY"]),
-    getButtonLabel(): string {
-      if (this.IS_APP_READY) return "GO RANDOMIZE";
-      else return "TEAM READY";
-    }
+    return {
+      ...toRefs(state),
+      handleClick,
+      isAppReady,
+      handleCheckEvent,
+      handleClickBack,
+      getButtonLabel
+    };
   }
-});
+};
 </script>
 
 <style lang="scss">
