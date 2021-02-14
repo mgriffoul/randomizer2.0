@@ -3,7 +3,7 @@
     <div class="navigation">
       <img
         :src="require('@/assets/back-arrow.svg')"
-        v-if="isAppReady"
+        v-if="IS_APP_READY"
         @click="handleClickBack"
         alt="back-arrow"
       />
@@ -97,7 +97,7 @@ export default defineComponent({
     },
 
     handleClick(): void {
-      if (this.isAppReady) {
+      if (this.IS_APP_READY) {
         this.randomize();
       } else {
         this.SET_APP_READY_ACTION(this.team);
@@ -121,9 +121,9 @@ export default defineComponent({
     ...mapActions(["SET_APP_READY_ACTION"])
   },
   computed: {
-    ...mapGetters(["isAppReady"]),
+    ...mapGetters(["IS_APP_READY"]),
     getButtonLabel(): string {
-      if (this.isAppReady) return "GO RANDOMIZE";
+      if (this.IS_APP_READY) return "GO RANDOMIZE";
       else return "TEAM READY";
     }
   }
