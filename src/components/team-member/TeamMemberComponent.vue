@@ -44,13 +44,12 @@ export default {
     const isAppReady = computed(() => {
       return store.getters.IS_APP_READY;
     });
+    const shouldDisplayMember = computed(() => {
+      return !isAppReady.value || (isAppReady.value && isPresent.value);
+    });
 
     watch(isPresent, () => {
       emit("check", { id: id.value, isPresent: isPresent.value });
-    });
-
-    const shouldDisplayMember = computed(() => {
-      return !isAppReady.value || (isAppReady.value && isPresent.value);
     });
 
     return {

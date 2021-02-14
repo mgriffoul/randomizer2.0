@@ -27,78 +27,32 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { TeamConfig, TeamMember } from "@/team.config";
+import { TeamMember } from "@/team.config";
 import TeamMemberComponent from "@/components/team-member/TeamMemberComponent.vue";
 import { mapActions, mapGetters, mapMutations } from "vuex";
+import TeamMemberRepository from "@/commons/repositories/TeamMemberRepository";
+import RandomizeService from "@/components/randomizer/RandomizeService";
+
+const teamMemberRepository = new TeamMemberRepository();
+const randomizeService = new RandomizeService();
 
 export default defineComponent({
   name: "RandomizerComponent",
-
   components: {
     TeamMemberComponent
   },
-
   data() {
     return {
-      team: [] as TeamMember[],
-      ticksNumber: 0
+      team: [] as TeamMember[]
     };
   },
-
-  created() {
-    this.team = this.fetchTeam();
+  mounted() {
+    this.team = teamMemberRepository.fetchTeam();
   },
-
   methods: {
-    fetchTeam(): TeamMember[] {
-      return localStorage.getItem("TEAM")
-        ? (JSON.parse(localStorage.getItem("TEAM") as string) as TeamMember[])
-        : TeamConfig.getTeam();
-    },
-
-    randomize(): void {
-      this.ticksNumber = 1;
-      setTimeout(this.manageTicks, 1000);
-    },
-
-    manageTicks(): void {
-      this.calculateNewOrder();
-      if (this.ticksNumber <= 120) {
-        setTimeout(this.manageTicks, 700 / this.ticksNumber);
-      } else {
-        return;
-      }
-      this.ticksNumber++;
-    },
-
-    calculateNewOrder(): void {
-      console.log("calculate ", this.ticksNumber);
-      const minIndex = Math.ceil(1);
-      const maxIndex = Math.floor(this.team.length);
-      const attributedIndexes: number[] = [];
-
-      while (attributedIndexes.length < this.team.length) {
-        const currentIndex =
-          Math.floor(Math.random() * (maxIndex - minIndex + 1)) + minIndex;
-        if (!attributedIndexes.includes(currentIndex)) {
-          attributedIndexes.push(currentIndex);
-        }
-      }
-      let count = 0;
-      this.team.forEach((teamMember: { order: number }) => {
-        teamMember.order = attributedIndexes[count];
-        count++;
-      });
-      this.team.sort(this.compare);
-    },
-
-    compare(first: TeamMember, second: TeamMember): number {
-      return first.order - second.order;
-    },
-
     handleClick(): void {
       if (this.IS_APP_READY) {
-        this.randomize();
+        randomizeService.randomize(this.team);
       } else {
         this.SET_APP_READY_ACTION(this.team);
       }
