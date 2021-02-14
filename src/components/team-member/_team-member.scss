@@ -6,7 +6,28 @@
     font-size: 20px;
     margin-left: $primary-left-space;
   }
-  img {
-    height: 45px;
+
+  .img-wrapper {
+    position: relative;
+    cursor: pointer;
+
+    img {
+      height: 45px;
+    }
+    .overlay {
+      display: none;
+      top: 0;
+      height: 45px;
+      width: 100%;
+      position: absolute;
+      background-color: black;
+      opacity: 0.8;
+    }
+
+    .overlay.present {
+      display: block;
+    }
   }
+
+
 }

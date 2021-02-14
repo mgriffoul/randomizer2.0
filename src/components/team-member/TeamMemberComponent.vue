@@ -1,19 +1,19 @@
 <template>
   <div class="team-member" v-if="shouldDisplayMember">
-    <img
-      class="avatar"
-      :src="require(`@/assets/avatar/${avatarFileName}`)"
-      :alt="firstName"
-    />
+    <div class="img-wrapper" @click="togglePresence">
+      <img
+        class="avatar"
+        :src="require(`@/assets/avatar/${avatarFileName}`)"
+        :alt="firstName"
+      />
+      <div class="overlay" v-bind:class="{ present: !isPresent }"></div>
+    </div>
     <span class="first-name">{{ firstName }}</span>
-    <label>
-      <input type="checkbox" v-model="isPresent" v-show="!isAppReady" />
-    </label>
   </div>
 </template>
 
 <script lang="ts">
-import { ref, watch, computed } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "@/store";
 
 interface Props {
@@ -48,14 +48,18 @@ export default {
       return !isAppReady.value || (isAppReady.value && isPresent.value);
     });
 
-    watch(isPresent, () => {
-      emit("check", { id: id.value, isPresent: isPresent.value });
-    });
+    const togglePresence = function() {
+      if (!isAppReady.value) {
+        isPresent.value = !isPresent.value;
+        emit("check", { id: id.value, isPresent: isPresent.value });
+      }
+    };
 
     return {
       isPresent,
       shouldDisplayMember,
-      isAppReady
+      isAppReady,
+      togglePresence
     };
   }
 };

@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { onMounted, computed, reactive, toRefs } from "vue";
+import { onMounted, computed, reactive, toRefs, ref } from "vue";
 import TeamMemberComponent from "@/components/team-member/TeamMemberComponent.vue";
 import TeamMemberRepository from "@/commons/repositories/TeamMemberRepository";
 import RandomizeService from "@/components/randomizer/RandomizeService";
@@ -74,17 +74,31 @@ export default {
       }
     };
 
+    const compareById = (first: TeamMember, second: TeamMember): number => {
+      return first.id - second.id;
+    };
+
     const handleCheckEvent = (value: {
       id: number;
       isPresent: boolean;
     }): void => {
-      const modifiedTeamMember = state.team.filter(
-        value1 => value1.id === value.id
-      )[0];
-      modifiedTeamMember.presence = value.isPresent;
+      const modifiedTeamMember = ref(
+        state.team.filter(value1 => value1.id === value.id)[0]
+      );
+
+      modifiedTeamMember.value.presence = !modifiedTeamMember.value.presence;
+
+      const newTeam: TeamMember[] = state.team.filter(
+        value1 => value1.id !== value.id
+      );
+
+      newTeam.push(modifiedTeamMember.value);
+      state.team = newTeam.sort(compareById);
     };
+
     const handleClickBack = () => {
       store.commit(MutationType.setAppNotReadyMutation);
+      state.team.sort(compareById);
     };
 
     return {
