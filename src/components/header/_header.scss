@@ -1,23 +1,48 @@
 .header {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 80px;
+  background-color: $dark-deep-green;
   color: black;
-  font-size: 30px;
+
   text-transform: uppercase;
 
-  .title {
+  .header-full-height {
+    height: 100%;
     display: flex;
-    color: white;
-    .copyright {
-      font-size: 35px;
-      align-self: flex-start;
+    flex-direction: column;
+    justify-content: center;
+
+    img {
+      margin: 0 15px;
     }
   }
 
+  .title {
+    font-size: 25px;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    width: 150px;
+    height: 100%;
+
+    .title-label-top {
+      height: 25px;
+      padding-top: 10px;
+    }
+    .title-label-bot {
+      height: 25px;
+      padding-bottom: 10px;
+    }
+  }
 }
 
 img {
   height: 45px;
+}
+
+.cursor-pointer:hover{
+  cursor: pointer;
 }
