@@ -3,7 +3,7 @@
     <div class="navigation">
       <img
         :src="require('@/assets/back-arrow.svg')"
-        v-if="isAppReady"
+        v-if="isAppReady || isRandomizeCompleted"
         @click="handleClickBack"
         alt="back-arrow"
       />
@@ -19,6 +19,8 @@
           :avatarFileName="teamMember.avatarFileName"
           :presence="teamMember.presence"
           :id="teamMember.id"
+          :order="teamMember.order"
+          :step="step"
         />
       </li>
     </ul>
@@ -26,17 +28,22 @@
 </template>
 
 <script lang="ts">
-import { onMounted, computed, reactive, toRefs, ref } from "vue";
-import TeamMemberComponent from "@/components/team-member/TeamMemberComponent.vue";
-import TeamMemberRepository from "@/commons/repositories/TeamMemberRepository";
+import { computed, onMounted, reactive, ref, toRefs } from "vue";
+import TeamMemberComponent from "@/components/randomizer/team-member/TeamMemberComponent.vue";
+import TeamMembersProvider from "@/providers/team/TeamMembersProvider";
 import RandomizeService from "@/components/randomizer/RandomizeService";
-import { useStore } from "@/store";
-import { MutationType } from "@/store/mutations";
-import { ActionTypes } from "@/store/actions";
 import { TeamMember } from "@/team.config";
 
 interface State {
   team: TeamMember[];
+  step: Step;
+}
+
+export enum Step {
+  settingPresence = "SETTING_PRESENCE",
+  ready = "READY",
+  pending = "PENDING",
+  randomizeCompleted = "COMPLETED"
 }
 
 export default {
@@ -45,32 +52,43 @@ export default {
     TeamMemberComponent
   },
   setup() {
-    const teamMemberRepository = new TeamMemberRepository();
+    const teamMemberRepository = new TeamMembersProvider();
     const randomizeService = new RandomizeService();
 
     const state: State = reactive({
-      team: []
+      team: [],
+      step: Step.settingPresence
     });
-
-    const store = useStore();
 
     onMounted(() => {
       state.team = teamMemberRepository.fetchTeam();
     });
 
     const isAppReady = computed(() => {
-      return store.getters.IS_APP_READY;
+      return state.step === Step.ready;
+    });
+    const isRandomizeCompleted = computed(() => {
+      return state.step === Step.randomizeCompleted;
+    });
+    const isRandomizePending = computed(() => {
+      return state.step === Step.pending;
     });
     const getButtonLabel = computed(() => {
       if (isAppReady.value) return "GO RANDOMIZE";
-      else return "TEAM READY";
+      if (isRandomizeCompleted.value) return "REDO";
+      if (isRandomizePending.value) return "PROCESSING...";
+      else return "IM READY";
     });
 
-    const handleClick = (): void => {
-      if (isAppReady.value) {
-        randomizeService.randomize(state.team);
+    const handleClick = async () => {
+      if (isAppReady.value || isRandomizeCompleted.value) {
+        state.step = Step.pending;
+        await randomizeService.randomize(state.team).then(() => {
+          state.step = Step.randomizeCompleted;
+        });
       } else {
-        store.dispatch(ActionTypes.SetAppReadyAction, state.team);
+        state.step = Step.ready;
+        teamMemberRepository.storeInLocalStorage(state.team);
       }
     };
 
@@ -82,6 +100,10 @@ export default {
       id: number;
       isPresent: boolean;
     }): void => {
+      if (state.step !== Step.settingPresence) {
+        return;
+      }
+
       const modifiedTeamMember = ref(
         state.team.filter(value1 => value1.id === value.id)[0]
       );
@@ -97,7 +119,7 @@ export default {
     };
 
     const handleClickBack = () => {
-      store.commit(MutationType.setAppNotReadyMutation);
+      state.step = Step.settingPresence;
       state.team.sort(compareById);
     };
 
@@ -105,6 +127,7 @@ export default {
       ...toRefs(state),
       handleClick,
       isAppReady,
+      isRandomizeCompleted,
       handleCheckEvent,
       handleClickBack,
       getButtonLabel

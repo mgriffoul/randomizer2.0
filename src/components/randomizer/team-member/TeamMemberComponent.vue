@@ -8,19 +8,26 @@
       />
       <div class="overlay" v-bind:class="{ present: !isPresent }"></div>
     </div>
+    <span class="order" v-if="isRandomizeCompleted">{{ order }}</span>
     <span class="first-name">{{ firstName }}</span>
   </div>
 </template>
 
 <script lang="ts">
-import { ref, computed } from "vue";
-import { useStore } from "@/store";
+import { toRefs, computed, ref } from "vue";
+import { Step } from "@/components/randomizer/RandomizerComponent.vue";
+
+interface State {
+  step: Step;
+}
 
 interface Props {
   presence: boolean;
   firstName: string;
   avatarFileName: string;
   id: number;
+  order: number;
+  step: Step;
 }
 
 export default {
@@ -34,18 +41,25 @@ export default {
     presence: { type: Boolean, required: true },
     firstName: { type: String, required: true },
     avatarFileName: { type: String, required: true },
-    id: { type: Number, required: true }
+    id: { type: Number, required: true },
+    order: { type: Number, required: true },
+    step: { type: Step, required: true }
   },
   setup(props: Props, { emit }: { emit: Function }) {
-    const store = useStore();
-    const id = ref(props.id);
+    const { id, step } = { ...toRefs(props) };
     const isPresent = ref(props.presence);
 
     const isAppReady = computed(() => {
-      return store.getters.IS_APP_READY;
+      return step.value === Step.ready;
+    });
+    const isRandomizeCompleted = computed(() => {
+      return step.value === Step.randomizeCompleted;
+    });
+    const presenceSettingUp = computed(() => {
+      return step.value === Step.settingPresence;
     });
     const shouldDisplayMember = computed(() => {
-      return !isAppReady.value || (isAppReady.value && isPresent.value);
+      return presenceSettingUp.value || isPresent.value;
     });
 
     const togglePresence = function() {
@@ -59,6 +73,7 @@ export default {
       isPresent,
       shouldDisplayMember,
       isAppReady,
+      isRandomizeCompleted,
       togglePresence
     };
   }
@@ -66,5 +81,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./_team-member.scss";
+@import "src/components/randomizer/team-member/team-member";
 </style>

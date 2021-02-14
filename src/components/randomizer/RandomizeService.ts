@@ -9,18 +9,20 @@ export default class RandomizeService {
     this.team = [];
   }
 
-  public randomize = (team: TeamMember[]): TeamMember[] => {
-    this.ticksNumber = 1;
-    this.team = team;
-    setTimeout(() => this.manageTicks(), 1000);
-    return team;
+  public randomize = (team: TeamMember[]): Promise<TeamMember[]> => {
+    return new Promise<TeamMember[]>(resolve => {
+      this.ticksNumber = 1;
+      this.team = team;
+      setTimeout(() => this.manageTicks(resolve), 1000);
+    });
   };
 
-  private manageTicks = (): void => {
+  private manageTicks = (resolve: Function): void => {
     this.calculateNewOrder();
     if (this.ticksNumber <= 120) {
-      setTimeout(() => this.manageTicks(), 700 / this.ticksNumber);
+      setTimeout(() => this.manageTicks(resolve), 700 / this.ticksNumber);
     } else {
+      resolve(this.team);
       return;
     }
     this.ticksNumber++;
@@ -43,10 +45,10 @@ export default class RandomizeService {
       teamMember.order = attributedIndexes[count];
       count++;
     });
-    this.team.sort(this.compare);
+    this.team.sort(RandomizeService.compareByOrder);
   };
 
-  private compare(first: TeamMember, second: TeamMember): number {
+  private static compareByOrder(first: TeamMember, second: TeamMember): number {
     return first.order - second.order;
   }
 }

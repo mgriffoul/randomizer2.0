@@ -16,6 +16,14 @@
         @click="routeTo('randomizer')"
       />
     </div>
+    <div class="header-full-height">
+      <img
+        class="cursor-pointer"
+        :src="require('@/assets/report.svg')"
+        alt="shuffle"
+        @click="routeTo('report')"
+      />
+    </div>
   </div>
 </template>
 
