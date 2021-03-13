@@ -1,6 +1,6 @@
 import JiraProvider from "../../../providers/jira/JiraProvider";
 import { AxiosResponse } from "axios";
-import Story from "../model/Story";
+import { Story } from "@/components/report-generator/model/Story";
 
 export class SprintRepository {
   private jiraProvider: JiraProvider;
@@ -25,7 +25,9 @@ export class SprintRepository {
 
   getSprintIssues = (): Promise<Story[]> => {
     return this.getActiveSprint().then(async (sprintId: number) => {
-      return await this.jiraProvider.getIssuesFromSprintId(sprintId.toString());
+      return this.jiraProvider
+        .getIssuesFromSprintId(sprintId.toString())
+        .then();
     });
   };
 }

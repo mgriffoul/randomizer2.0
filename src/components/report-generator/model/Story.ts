@@ -18,28 +18,14 @@ export enum StoryStatus {
  * Story point code = customfield_10004
  * Refined story point = customfield_11561
  */
-export default class Story {
-  public id: string;
-  public key: string;
-  public summary: string;
-  public status: StoryStatus | undefined;
-  public storyType: StoryType | undefined;
+export interface Story {
+  id: string;
+  key: string;
+  summary: string;
+  status: StoryStatus | undefined;
+  storyType: StoryType | undefined;
   // customfield_10004
-  storyPoint?: number | undefined | null;
+  storyPoint?: number | null | undefined;
   // customfield_11561
-  refinedStoryPoint?: number | undefined | null;
-
-  constructor(
-    id: string,
-    key: string,
-    summary: string,
-    storyPoint: number | undefined | null,
-    refinedStoryPoint: number | undefined | null
-  ) {
-    this.id = id;
-    this.key = key;
-    this.summary = summary;
-    this.storyPoint = storyPoint;
-    this.refinedStoryPoint = refinedStoryPoint;
-  }
+  refinedStoryPoint?: number | null | undefined;
 }

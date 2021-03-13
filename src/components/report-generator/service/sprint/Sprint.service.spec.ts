@@ -1,32 +1,77 @@
-import Story, {
+import {
+  Story,
   StoryStatus,
   StoryType
 } from "@/components/report-generator/model/Story";
-import { Sprint } from "@/components/report-generator/model/Sprint";
+import { SprintStories } from "@/components/report-generator/model/SprintStories";
 import { SprintService } from "@/components/report-generator/service/sprint/Sprint.service";
 
 describe("SprintService : ", () => {
-  const story1 = new Story("id1", "key1", "summary1", 3, 5);
-  story1.status = StoryStatus.DONE;
-  story1.storyType = StoryType.TECHNICAL;
-  const story2 = new Story("id2", "key2", "summary2", 2, 3);
-  story2.status = StoryStatus.WIP;
-  story2.storyType = StoryType.TECHNICAL;
-  const story3 = new Story("id3", "key3", "summary3", 2, 5);
-  story3.status = StoryStatus.WIP;
-  story3.storyType = StoryType.FUNCTIONAL;
-  const story4 = new Story("id4", "key4", "summary4", 1, 1);
-  story4.status = StoryStatus.DONE;
-  story4.storyType = StoryType.FUNCTIONAL;
-  const story5 = new Story("id5", "key5", "summary5", 1, 1);
-  story5.status = StoryStatus.WIP;
-  story5.storyType = StoryType.BUG;
-  const story6 = new Story("id6", "key6", "summary6", 1, 1);
-  story6.status = StoryStatus.TODO;
-  story6.storyType = StoryType.BUG;
-  const story7 = new Story("id7", "key7", "summary7", 1, 1);
-  story7.status = StoryStatus.TODO;
-  const storyList = [story7, story6, story5, story4, story3, story2, story1];
+  const story1: Story = {
+    id: "id1",
+    key: "key1",
+    summary: "summary1",
+    storyPoint: 3,
+    refinedStoryPoint: 5,
+    status: StoryStatus.WIP,
+    storyType: StoryType.TECHNICAL
+  };
+  const story2: Story = {
+    id: "id2",
+    key: "key2",
+    summary: "summary2",
+    storyPoint: 2,
+    status: StoryStatus.DONE,
+    storyType: StoryType.TECHNICAL
+  };
+  const story3: Story = {
+    id: "id3",
+    key: "key3",
+    summary: "summary3",
+    storyPoint: 2,
+    status: StoryStatus.DONE,
+    storyType: StoryType.FUNCTIONAL
+  };
+  const story4: Story = {
+    id: "id4",
+    key: "key4",
+    summary: "summary4",
+    storyPoint: 1,
+    refinedStoryPoint: 2,
+    status: StoryStatus.WIP,
+    storyType: StoryType.FUNCTIONAL
+  };
+  const story5: Story = {
+    id: "id5",
+    key: "key5",
+    summary: "summary5",
+    status: StoryStatus.WIP,
+    storyType: StoryType.BUG
+  };
+  const story6: Story = {
+    id: "id6",
+    key: "key6",
+    summary: "summary6",
+    status: StoryStatus.TODO,
+    storyType: StoryType.BUG
+  };
+  const story7: Story = {
+    id: "id7",
+    key: "key7",
+    summary: "summary7",
+    status: StoryStatus.TODO,
+    storyType: StoryType.BUG
+  };
+
+  const storyList: Story[] = [
+    story7,
+    story6,
+    story5,
+    story4,
+    story3,
+    story2,
+    story1
+  ];
 
   const sprintService: SprintService = new SprintService();
 
@@ -34,12 +79,11 @@ describe("SprintService : ", () => {
     // Given
     // When
 
-    const sprint: Sprint = {
+    const sprint: SprintStories = {
       bugs: sprintService.getOnlyBugs(storyList),
       technicalStories: sprintService.getOnlyTechnicalStory(storyList),
       functionalStories: sprintService.getOnlyfunctionalStories(storyList)
     };
-    console.log(sprint);
     // Then
     expect(sprint.technicalStories.length).toEqual(2);
     expect(sprint.technicalStories).toContain(story1);
@@ -51,5 +95,58 @@ describe("SprintService : ", () => {
     expect(sprint.functionalStories.length).toEqual(2);
     expect(sprint.functionalStories).toContain(story3);
     expect(sprint.functionalStories).toContain(story4);
+  });
+
+  it("getSprintBacklogPoints should return total of sprint story point, counting refinedStoryPoint instead if defined", () => {
+    // Given
+    const sprint: SprintStories = {
+      bugs: [story5, story6, story7],
+      technicalStories: [story1, story2],
+      functionalStories: [story4, story3]
+    };
+
+    // When
+    const result = sprintService.getSprintBacklogPoints(sprint);
+
+    // Then
+    expect(result).toEqual(11);
+  });
+
+  it("getSprintRemainingPoints should return total of remaining points", () => {
+    // Given
+    const sprint: SprintStories = {
+      bugs: [story5, story6, story7],
+      technicalStories: [story1, story2],
+      functionalStories: [story4, story3]
+    };
+
+    // When
+    const result = sprintService.getSprintRemainingPoints(sprint);
+
+    // Then
+    expect(result).toEqual(1);
+  });
+
+  it("getDonePoints should return total of done points", () => {
+    // Given
+    const maStory: Story = {
+      id: "id2",
+      key: "key2",
+      summary: "summary2",
+      storyPoint: 2,
+      status: StoryStatus.DONE,
+      storyType: StoryType.FUNCTIONAL
+    };
+    const sprintStories: SprintStories = {
+      functionalStories: [maStory, story4],
+      technicalStories: [],
+      bugs: []
+    };
+
+    // When
+    const result = sprintService.getDonePoints(sprintStories);
+
+    // Then
+    expect(result).toEqual(3);
   });
 });

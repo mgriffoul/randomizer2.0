@@ -3,8 +3,8 @@ export interface JiraIssue {
   key: string;
   fields: {
     summary: string;
-    customfield_10004: number | undefined | null;
-    customfield_11561: number | undefined | null;
+    customfield_10004: number | null | undefined;
+    customfield_11561?: number | null | undefined;
     issuetype: {
       name: string;
     };

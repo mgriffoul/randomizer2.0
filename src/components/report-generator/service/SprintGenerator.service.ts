@@ -1,6 +1,9 @@
 import JiraProvider from "@/providers/jira/JiraProvider";
 import { SprintRepository } from "@/components/report-generator/repository/SprintRepository";
-import { Sprint } from "@/components/report-generator/model/Sprint";
+import {
+  Sprint,
+  SprintStories
+} from "@/components/report-generator/model/SprintStories";
 import { SprintService } from "@/components/report-generator/service/sprint/Sprint.service";
 
 export default class SprintGeneratorService {
@@ -14,7 +17,18 @@ export default class SprintGeneratorService {
     this.sprintService = new SprintService();
   }
 
-  async getSprintStories(): Promise<Sprint> {
+  async getSprint(): Promise<Sprint> {
+    const sprintStories = await this.getSprintStories();
+    console.log("in get sprint");
+    return {
+      sprintStories,
+      sprintBacklog: this.sprintService.getSprintBacklogPoints(sprintStories),
+      remain: this.sprintService.getSprintRemainingPoints(sprintStories),
+      done: this.sprintService.getDonePoints(sprintStories)
+    };
+  }
+
+  async getSprintStories(): Promise<SprintStories> {
     const rawStoryList = await this.sprintRepository.getSprintIssues();
     const technicalStories = this.sprintService.getOnlyTechnicalStory(
       rawStoryList

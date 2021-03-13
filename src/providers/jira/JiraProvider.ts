@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import JiraIssueMapper from "./mapper/JiraIssueMapper";
-import Story from "@/components/report-generator/model/Story";
+import { Story } from "@/components/report-generator/model/Story";
 
 const config = {
   JIRA_USERNAME: "",
@@ -26,7 +26,11 @@ export default class JiraProvider {
         auth: { username: config.JIRA_USERNAME, password: config.JIRA_PASSWORD }
       })
       .then(response => {
-        return this.jiraIssueMapper.mapJiraIssues(response.data.issues);
+        return this.jiraIssueMapper.mapJiraIssues(
+          response.data.issues.filter(
+            (response: any) => response.fields.sprint.id === 219
+          )
+        );
       });
   }
 }

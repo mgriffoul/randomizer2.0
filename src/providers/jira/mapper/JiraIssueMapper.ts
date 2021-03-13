@@ -1,22 +1,21 @@
-import Story, {
+import {
+  Story,
   StoryStatus,
   StoryType
-} from "../../../components/report-generator/model/Story";
+} from "@/components/report-generator/model/Story";
 import { JiraIssue } from "@/providers/jira/model/JiraIssue";
 
 export default class JiraIssueMapper {
   public mapJiraIssue(jiraIssue: JiraIssue): Story {
-    const story: Story = new Story(
-      jiraIssue.id,
-      jiraIssue.key,
-      jiraIssue.fields.summary,
-      jiraIssue.fields.customfield_10004,
-      jiraIssue.fields.customfield_11561
-    );
-    story.status = JiraIssueMapper.getStoryStatus(jiraIssue.fields.status.name);
-    story.storyType = JiraIssueMapper.getStoryType(
-      jiraIssue.fields.issuetype.name
-    );
+    const story: Story = {
+      id: jiraIssue.id,
+      key: jiraIssue.key,
+      summary: jiraIssue.fields.summary,
+      storyPoint: jiraIssue.fields.customfield_10004,
+      refinedStoryPoint: jiraIssue.fields?.customfield_11561,
+      status: JiraIssueMapper.getStoryStatus(jiraIssue.fields.status.name),
+      storyType: JiraIssueMapper.getStoryType(jiraIssue.fields.issuetype.name)
+    };
     return story;
   }
 

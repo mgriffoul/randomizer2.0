@@ -1,6 +1,7 @@
 <template>
   <div class="randomizer">
     <div class="navigation">
+      <button @click="logHello">Coucou</button>
       <img
         :src="require('@/assets/back-arrow.svg')"
         v-if="isAppReady || isRandomizeCompleted"
@@ -34,7 +35,7 @@ import TeamMembersProvider from "@/providers/team/TeamMembersProvider";
 import RandomizeService from "@/components/randomizer/RandomizeService";
 import { TeamMember } from "@/team.config";
 
-interface State {
+export interface State {
   team: TeamMember[];
   step: Step;
 }

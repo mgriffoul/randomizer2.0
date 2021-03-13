@@ -1,39 +1,41 @@
 <template>
-  <div class="rapport" v-if="sprint">
-    Dernier sprint acitf :
+  <div class="rapport" v-if="!loading">
+    Dernier sprint acitf : SprintBacklogValue :
+    {{ sprint.value.sprintBacklog }} Remain : {{ sprint.value.remain }} Done :
+    {{ sprint.value.done }}
     <div>
       <h1>FUNCTIONAL</h1>
       <div
-        v-for="story in sprint.functionalStories"
+        v-for="story in sprint.value.sprintStories.functionalStories"
         :key="story.id"
         v-bind:class="story.status"
         data-test="functionalStories"
       >
-        <H1 data-test="story">------</H1>
+        <h1 data-test="story">------</h1>
         <span>{{ story.key }} </span><span> {{ story.summary }}</span>
         <p>storyPoints : {{ story.storyPoint }}</p>
         <p>refinedStory Points : {{ story.refinedStoryPoint }}</p>
       </div>
       <h1>TECHNICAL</h1>
       <div
-        v-for="story in sprint.technicalStories"
+        v-for="story in sprint.value.sprintStories.technicalStories"
         :key="story.id"
         v-bind:class="story.status"
         data-test="technicalStories"
       >
-        <H1>------</H1>
+        <h1>------</h1>
         <span>{{ story.key }} </span><span> {{ story.summary }}</span>
         <p>storyPoints : {{ story.storyPoint }}</p>
         <p>refinedStory Points : {{ story.refinedStoryPoint }}</p>
       </div>
       <h1>BUGS</h1>
       <div
-        v-for="story in sprint.bugs"
+        v-for="story in sprint.value.sprintStories.bugs"
         :key="story.id"
         v-bind:class="story.status"
         data-test="bugs"
       >
-        <H1>------</H1>
+        <h1>------</h1>
         <span>{{ story.key }} </span><span> {{ story.summary }}</span>
         <p>storyPoints : {{ story.storyPoint }}</p>
         <p>refinedStory Points : {{ story.refinedStoryPoint }}</p>
@@ -43,28 +45,36 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref } from "vue";
-import { Sprint } from "./model/Sprint";
-import Story from "./model/Story";
+import { onMounted, reactive, ref, toRefs } from "vue";
 import SprintGeneratorService from "@/components/report-generator/service/SprintGenerator.service";
 
 export default {
   name: "ReportGenerator",
   setup: function() {
     const sprintReportService = new SprintGeneratorService();
-
-    const sprint = ref<Sprint>({
-      technicalStories: [] as Story[],
-      functionalStories: [] as Story[],
-      bugs: [] as Story[]
-    });
+    const loading = ref(true);
+    const sprint: any = toRefs(
+      reactive({
+        sprintStories: {
+          technicalStories: [],
+          functionalStories: [],
+          bugs: []
+        },
+        done: 0,
+        remain: 0,
+        sprintBacklog: 0
+      })
+    );
 
     onMounted(async () => {
-      sprint.value = await sprintReportService.getSprintStories();
+      sprint.value = await sprintReportService.getSprint();
+      console.log(sprint.value);
+      loading.value = false;
     });
 
     return {
-      sprint: sprint
+      sprint,
+      loading
     };
   }
 };
