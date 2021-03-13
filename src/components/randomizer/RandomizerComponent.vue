@@ -1,7 +1,6 @@
 <template>
   <div class="randomizer">
     <div class="navigation">
-      <button @click="logHello">Coucou</button>
       <img
         :src="require('@/assets/back-arrow.svg')"
         v-if="isAppReady || isRandomizeCompleted"
