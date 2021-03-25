@@ -1,8 +1,12 @@
 <template>
+  <div>
+    <LoginForm></LoginForm>
+  </div>
+
   <div class="rapport" v-if="!loading">
     Dernier sprint acitf : SprintBacklogValue :
     {{ sprint.value.sprintBacklog }} Remain : {{ sprint.value.remain }} Done :
-    {{ sprint.value.done }}
+    @{{ sprint.value.done }}
     <div>
       <h1>FUNCTIONAL</h1>
       <div
@@ -12,7 +16,7 @@
         data-test="functionalStories"
       >
         <h1 data-test="story">------</h1>
-        <span>{{ story.key }} </span><span> {{ story.summary }}</span>
+        d <span>{{ story.key }} </span><span> {{ story.summary }}</span>
         <p>storyPoints : {{ story.storyPoint }}</p>
         <p>refinedStory Points : {{ story.refinedStoryPoint }}</p>
       </div>
@@ -47,9 +51,11 @@
 <script lang="ts">
 import { onMounted, reactive, ref, toRefs } from "vue";
 import SprintGeneratorService from "@/components/report-generator/service/SprintGenerator.service";
+import LoginForm from "@/commons/shared-component/LoginForm.vue";
 
 export default {
   name: "ReportGenerator",
+  components: { LoginForm },
   setup: function() {
     const sprintReportService = new SprintGeneratorService();
     const loading = ref(true);

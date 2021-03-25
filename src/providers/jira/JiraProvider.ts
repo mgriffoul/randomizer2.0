@@ -3,8 +3,8 @@ import JiraIssueMapper from "./mapper/JiraIssueMapper";
 import { Story } from "@/components/report-generator/model/Story";
 
 const config = {
-  JIRA_USERNAME: "",
-  JIRA_PASSWORD: ""
+  JIRA_USERNAME: "mathieu.griffoul@zenika.com",
+  JIRA_PASSWORD: "Ko63MHuZdqEmT6Lda2ClF862"
 };
 
 export default class JiraProvider {

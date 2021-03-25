@@ -120,6 +120,13 @@ export class TeamConfig {
         presence: true,
         order: 0,
         id: 16
+      },
+      {
+        firstName: "Marc",
+        avatarFileName: "marc.png",
+        presence: true,
+        order: 0,
+        id: 17
       }
     ];
   };
