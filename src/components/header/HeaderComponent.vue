@@ -13,7 +13,7 @@
         class="cursor-pointer"
         :src="require('@/assets/shuffle.svg')"
         alt="shuffle"
-        @click="routeTo('randomizer')"
+        @click="routeTo('dsm')"
       />
     </div>
     <div class="header-full-height">

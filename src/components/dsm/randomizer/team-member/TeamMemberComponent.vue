@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { toRefs, computed, ref } from "vue";
-import { Step } from "@/components/randomizer/RandomizerComponent.vue";
+import { Step } from "@/components/dsm/randomizer/RandomizerComponent.vue";
 
 interface State {
   step: Step;
@@ -81,5 +81,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "src/components/randomizer/team-member/team-member";
+@import "src/components/dsm/randomizer/team-member/team-member";
 </style>
