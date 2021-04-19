@@ -1,6 +1,6 @@
 <template>
   <div>
-    <LoginForm></LoginForm>
+    <LoginForm @login-send="loadData($event)"></LoginForm>
   </div>
 
   <div class="rapport" v-if="!loading">
@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { onMounted, reactive, ref, toRefs } from "vue";
+import { reactive, ref, toRefs } from "vue";
 import SprintGeneratorService from "@/components/report-generator/service/SprintGenerator.service";
 import LoginForm from "@/commons/shared-component/LoginForm.vue";
 
@@ -72,15 +72,15 @@ export default {
       })
     );
 
-    onMounted(async () => {
-      sprint.value = await sprintReportService.getSprint();
-      console.log(sprint.value);
+    const loadData = async (e: any) => {
+      sprint.value = await sprintReportService.getSprint(e.login, e.password);
       loading.value = false;
-    });
+    };
 
     return {
       sprint,
-      loading
+      loading,
+      loadData
     };
   }
 };

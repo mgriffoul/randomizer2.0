@@ -12,8 +12,6 @@ describe("mflks", () => {
   it("displays message", async () => {
     // mount() returns a wrapped Vue component we can interact with
     const wrapper = mount(ReportGenerator);
-    console.log(wrapper);
-    console.log("wrapper");
     // Assert the rendered text of the component
     expect(wrapper.text()).toContain("Hello world");
   });

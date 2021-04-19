@@ -9,9 +9,9 @@ export class SprintRepository {
     this.jiraProvider = new JiraProvider();
   }
 
-  getActiveSprint = (): Promise<number> => {
+  getActiveSprint = (login: string, password: string): Promise<number> => {
     return this.jiraProvider
-      .getActiveSprints()
+      .getActiveSprints(login, password)
       .then((response: AxiosResponse): number => {
         return response.data.values
           .map((sprint: { id: number }) => {
@@ -23,11 +23,13 @@ export class SprintRepository {
       });
   };
 
-  getSprintIssues = (): Promise<Story[]> => {
-    return this.getActiveSprint().then(async (sprintId: number) => {
-      return this.jiraProvider
-        .getIssuesFromSprintId(sprintId.toString())
-        .then();
-    });
+  getSprintIssues = (login: string, password: string): Promise<Story[]> => {
+    return this.getActiveSprint(login, password).then(
+      async (sprintId: number) => {
+        return this.jiraProvider
+          .getIssuesFromSprintId(sprintId.toString(), login, password)
+          .then();
+      }
+    );
   };
 }
