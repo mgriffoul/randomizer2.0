@@ -1,6 +1,6 @@
 <template>
-  <RandomizerComponent />
   <SprintKpi />
+  <RandomizerComponent />
 </template>
 
 <script lang="ts">

@@ -1,5 +1,4 @@
 <template>
-  <ChartTest></ChartTest>
   <div class="randomizer">
     <div class="navigation">
       <img
@@ -31,7 +30,6 @@
 <script lang="ts">
 import { computed, onMounted, reactive, ref, toRefs } from "vue";
 import TeamMemberComponent from "@/components/dsm/randomizer/team-member/TeamMemberComponent.vue";
-import ChartTest from "@/commons/shared-component/ChartTest.vue";
 import TeamMembersProvider from "@/providers/team/TeamMembersProvider";
 import RandomizeService from "@/components/dsm/randomizer/RandomizeService";
 import { TeamMember } from "@/team.config";
@@ -51,8 +49,7 @@ export enum Step {
 export default {
   name: "RandomizerComponent",
   components: {
-    TeamMemberComponent,
-    ChartTest
+    TeamMemberComponent
   },
   setup() {
     const teamMemberRepository = new TeamMembersProvider();

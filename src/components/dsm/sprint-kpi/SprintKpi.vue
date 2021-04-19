@@ -1,15 +1,25 @@
 <template>
   <div>
-    <ChartTest />
+    <Chart :chartConfig="repartitionConfig" />
   </div>
 </template>
 
 <script lang="ts">
-import ChartTest from "../../../commons/shared-component/ChartTest.vue";
+import Chart from "../../../commons/shared-component/Chart.vue";
+import { STORY_POINT_REPARTITION } from "@/components/dsm/sprint-kpi/sprintKpiConfig";
 
 export default {
   name: "SprintKpi",
-  components: { ChartTest }
+  components: { Chart },
+  setup() {
+    const repartitionConfig = STORY_POINT_REPARTITION;
+
+    console.log(repartitionConfig);
+
+    return {
+      repartitionConfig
+    };
+  }
 };
 </script>
 

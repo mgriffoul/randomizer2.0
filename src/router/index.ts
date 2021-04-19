@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import HomeComponent from "../components/home/HomeComponent.vue";
-import RandomizerComponent from "@/components/dsm/randomizer/RandomizerComponent.vue";
 import ReportGeneratorComponent from "@/components/report-generator/ReportGenerator.vue";
+import Dsm from "@/components/dsm/Dsm.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/dsm",
     name: "Dsm",
-    component: RandomizerComponent
+    component: Dsm
   },
   {
     path: "/report",
