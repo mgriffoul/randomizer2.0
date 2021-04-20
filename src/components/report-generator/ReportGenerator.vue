@@ -1,8 +1,4 @@
 <template>
-  <div>
-    <LoginForm @login-send="loadData($event)"></LoginForm>
-  </div>
-
   <div class="rapport" v-if="!loading">
     Dernier sprint acitf : SprintBacklogValue :
     {{ sprint.value.sprintBacklog }} Remain : {{ sprint.value.remain }} Done :
@@ -51,11 +47,9 @@
 <script lang="ts">
 import { reactive, ref, toRefs } from "vue";
 import SprintGeneratorService from "@/components/report-generator/service/SprintGenerator.service";
-import LoginForm from "@/commons/shared-component/LoginForm.vue";
 
 export default {
   name: "ReportGenerator",
-  components: { LoginForm },
   setup: function() {
     const sprintReportService = new SprintGeneratorService();
     const loading = ref(true);

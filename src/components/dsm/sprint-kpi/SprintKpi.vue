@@ -14,8 +14,6 @@ export default {
   setup() {
     const repartitionConfig = STORY_POINT_REPARTITION;
 
-    console.log(repartitionConfig);
-
     return {
       repartitionConfig
     };
