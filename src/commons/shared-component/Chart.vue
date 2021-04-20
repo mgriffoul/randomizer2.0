@@ -2,7 +2,6 @@
   <div style="display: flex;flex-direction:column; background-color:#01626b;">
     <vue3-chart-js
       :id="chartConfig.id"
-      ref="chartRef"
       :type="chartConfig.type"
       :data="chartConfig.data"
       :options="chartConfig.options"

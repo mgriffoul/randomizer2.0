@@ -9,4 +9,6 @@ export interface Sprint {
   sprintBacklog: number;
   remain: number;
   done: number;
+  wip: number;
+  sprintName?: string;
 }

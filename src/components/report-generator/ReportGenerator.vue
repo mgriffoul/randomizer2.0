@@ -3,7 +3,7 @@
   <div class="rapport" v-if="!loading">
     Dernier sprint acitf : SprintBacklogValue :
     {{ sprint.value.sprintBacklog }} Remain : {{ sprint.value.remain }} Done :
-    @{{ sprint.value.done }}
+    {{ sprint.value.done }}
     <div>
       <h1>FUNCTIONAL</h1>
       <div
@@ -90,8 +90,8 @@ export default {
 
     watch(
       () => user.value,
-      async () => {
-        await loadData();
+      () => {
+        loadData();
       }
     );
 

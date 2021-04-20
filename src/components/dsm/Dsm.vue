@@ -1,7 +1,9 @@
 <template>
-  <SprintKpi v-if="isUserLogged" />
-  <LoginError v-if="!isUserLogged" />
-  <RandomizerComponent />
+  <div style="width: 100%;">
+    <SprintKpi v-if="isUserLogged" />
+    <LoginError v-if="!isUserLogged" />
+    <RandomizerComponent />
+  </div>
 </template>
 
 <script lang="ts">

@@ -22,12 +22,6 @@ export default createStore({
     }
   },
   mutations: {
-    muteLogin(state: any, login: string) {
-      state.user.login = login;
-    },
-    mutePassword(state: any, password: string) {
-      state.user.password = password;
-    },
     muteUser(state: any, user: { login: string; password: string }) {
       state.user = user;
     }

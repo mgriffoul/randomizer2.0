@@ -18,12 +18,14 @@ export default class SprintGeneratorService {
   }
 
   async getSprint(login: string, password: string): Promise<Sprint> {
+    console.log("in sreviuce");
     const sprintStories = await this.getSprintStories(login, password);
     return {
       sprintStories,
       sprintBacklog: this.sprintService.getSprintBacklogPoints(sprintStories),
       remain: this.sprintService.getSprintRemainingPoints(sprintStories),
-      done: this.sprintService.getDonePoints(sprintStories)
+      done: this.sprintService.getDonePoints(sprintStories),
+      wip: this.sprintService.getWipPoints(sprintStories)
     };
   }
 
@@ -42,6 +44,7 @@ export default class SprintGeneratorService {
     const functionalStories = this.sprintService.getOnlyfunctionalStories(
       rawStoryList
     );
+
     return {
       technicalStories,
       functionalStories,

@@ -1,5 +1,9 @@
 import { SprintStories } from "@/components/report-generator/model/SprintStories";
-import { Story, StoryType } from "@/components/report-generator/model/Story";
+import {
+  Story,
+  StoryStatus,
+  StoryType
+} from "@/components/report-generator/model/Story";
 
 export class SprintService {
   public getOnlyBugs = (stories: Story[]): Story[] => {
@@ -56,6 +60,13 @@ export class SprintService {
     });
 
     return total;
+  }
+
+  public getWipPoints(sprintStories: any): any {
+    return sprintStories.functionalStories
+      .filter((story: any) => story.status === StoryStatus.WIP)
+      .map((story: any) => story.storyPoint)
+      .reduce((max: any, current: any) => max + current);
   }
 
   public getSprintRemainingPoints(sprint: SprintStories): number {
