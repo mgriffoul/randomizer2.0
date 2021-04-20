@@ -16,6 +16,9 @@ export default createStore({
     },
     getUser(state: any) {
       return state.user;
+    },
+    isUserLogged(state: any) {
+      return state.user.login && state.user.password;
     }
   },
   mutations: {

@@ -1,4 +1,5 @@
 <template>
+  <LoginError v-if="!isUserLogged" />
   <div class="rapport" v-if="!loading">
     Dernier sprint acitf : SprintBacklogValue :
     {{ sprint.value.sprintBacklog }} Remain : {{ sprint.value.remain }} Done :
@@ -45,12 +46,16 @@
 </template>
 
 <script lang="ts">
-import { reactive, ref, toRefs } from "vue";
+import { computed, reactive, ref, toRefs, watch } from "vue";
 import SprintGeneratorService from "@/components/report-generator/service/SprintGenerator.service";
+import { useStore } from "vuex";
+import LoginError from "@/commons/shared-component/LoginError.vue";
 
 export default {
   name: "ReportGenerator",
+  components: { LoginError },
   setup: function() {
+    const store = useStore();
     const sprintReportService = new SprintGeneratorService();
     const loading = ref(true);
     const sprint: any = toRefs(
@@ -66,15 +71,35 @@ export default {
       })
     );
 
-    const loadData = async (e: any) => {
-      sprint.value = await sprintReportService.getSprint(e.login, e.password);
+    const user = computed(() => store.getters.getUser);
+    const isUserLogged = computed(
+      () => user.value.login && user.value.password
+    );
+
+    const loadData = async () => {
+      sprint.value = await sprintReportService.getSprint(
+        user.value.login,
+        user.value.password
+      );
       loading.value = false;
     };
+
+    if (isUserLogged.value) {
+      loadData();
+    }
+
+    watch(
+      () => user.value,
+      async () => {
+        await loadData();
+      }
+    );
 
     return {
       sprint,
       loading,
-      loadData
+      user,
+      isUserLogged
     };
   }
 };
