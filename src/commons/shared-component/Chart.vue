@@ -1,12 +1,11 @@
 <template>
-  <div
-    style="height:600px;width: 600px;display: flex;flex-direction:column; background-color: white;"
-  >
+  <div style="display: flex;flex-direction:column; background-color:#01626b;">
     <vue3-chart-js
       :id="chartConfig.id"
       ref="chartRef"
       :type="chartConfig.type"
       :data="chartConfig.data"
+      :options="chartConfig.options"
     ></vue3-chart-js>
   </div>
 </template>

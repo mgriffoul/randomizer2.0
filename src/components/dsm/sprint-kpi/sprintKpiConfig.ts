@@ -1,29 +1,58 @@
 export const STORY_POINT_REPARTITION = {
-  id: "doughnut",
-  type: "pie",
+  type: "bar",
   data: {
-    labels: ["TODO", "WIP", "DONE"],
+    labels: ["Backlog"],
     datasets: [
       {
-        label: "test",
-        backgroundColor: ["#00D8FF", "#E46651", "#41B883"],
-        data: [23, 31, 3]
-      }
-    ]
-  }
-};
-
-export const BURNDOWN_CHART = {
-  id: "doughnut",
-  type: "pie",
-  data: {
-    labels: ["TODO", "WIP", "DONE"],
-    datasets: [
+        label: "TODO",
+        backgroundColor: ["#00D8FF"],
+        data: [23]
+      },
       {
-        label: "test",
-        backgroundColor: ["#00D8FF", "#E46651", "#41B883"],
-        data: [23, 15, 7]
+        label: "WIP",
+        backgroundColor: ["#E46651"],
+        data: [31]
+      },
+      {
+        label: "DONE",
+        backgroundColor: ["#41B883"],
+        data: [3]
       }
     ]
+  },
+  options: {
+    plugins: {
+      legend: {
+        title: {
+          color: "#fff"
+        },
+        labels: {
+          color: "#fff"
+        }
+      },
+      title: {
+        display: false
+      },
+      labels: {
+        display: false
+      }
+    },
+    indexAxis: "y",
+    scales: {
+      x: {
+        color: "#fff",
+        stacked: true,
+        grid: {
+          color: "#fff"
+        },
+        ticks: {
+          color: "#fff"
+        }
+      },
+      y: {
+        display: false,
+        stacked: true
+      }
+    }
   }
 };
