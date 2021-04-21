@@ -6,99 +6,34 @@
 </template>
 
 <script lang="ts">
-import Chart from "../../../commons/shared-component/Chart.vue";
+import Chart from "../../../commons/shared-component/charts/Chart.vue";
 import { useStore } from "vuex";
-import { computed, reactive, ref, toRefs, watch } from "vue";
-import SprintGeneratorService from "@/components/report-generator/service/SprintGenerator.service";
+import { computed, ref, watch } from "vue";
+import SprintKpi from "@/components/dsm/sprint-kpi/model/SprintKpi";
+import SprintKpiService from "@/components/dsm/sprint-kpi/service/SprintKpi.service";
+import ChartConfigService from "@/commons/shared-component/charts/ChartConfig.service";
 
 export default {
   name: "SprintKpi",
   components: { Chart },
   setup() {
-    const sprintGeneratorService = new SprintGeneratorService();
+    const sprintKpiService = new SprintKpiService();
+    const chartsService = new ChartConfigService();
 
     const store = useStore();
 
     const repartitionConfig = ref({});
-    const kpi = reactive({
-      sprintName: "",
-      done: 0,
-      remain: 0,
-      wip: 0,
-      sprintBacklog: 2
-    });
 
-    const { wip } = toRefs(kpi);
-    console.log("wip.value", wip.value);
     const user = computed(() => store.getters.getUser);
     const isUserLogged = computed(
       () => user.value.login && user.value.password
     );
 
     const loadData = () => {
-      sprintGeneratorService
-        .getSprint(user.value.login, user.value.password)
-        .then(response => {
-          const todoPoints =
-            response.sprintBacklog - response.wip - response.done + 2;
-          const wipPoints = response.wip + 13;
-          const donePoints = response.done - 18;
-
-          repartitionConfig.value = {
-            type: "bar",
-            data: {
-              labels: ["Backlog"],
-              datasets: [
-                {
-                  label: `TODO (${todoPoints} pnt)`,
-                  backgroundColor: ["#00D8FF"],
-                  data: [todoPoints]
-                },
-                {
-                  label: `WIP (${wipPoints} pnt)`,
-                  backgroundColor: ["#E46651"],
-                  data: [wipPoints]
-                },
-                {
-                  label: `DONE (${donePoints} pnt)`,
-                  backgroundColor: ["#41B883"],
-                  data: [donePoints]
-                }
-              ]
-            },
-            options: {
-              plugins: {
-                legend: {
-                  title: {
-                    color: "#fff"
-                  },
-                  labels: {
-                    color: "#fff"
-                  }
-                },
-                labels: {
-                  display: false
-                }
-              },
-              indexAxis: "y",
-              scales: {
-                x: {
-                  color: "#fff",
-                  stacked: true,
-                  grid: {
-                    color: "#fff"
-                  },
-                  ticks: {
-                    color: "#fff"
-                  }
-                },
-                y: {
-                  display: false,
-                  stacked: true
-                }
-              }
-            }
-          };
+      sprintKpiService
+        .getSprintKpis(user.value.login, user.value.password)
+        .then((response: SprintKpi) => {
+          repartitionConfig.value = chartsService.getSprintKpiConfig(response);
         });
     };
 
@@ -117,8 +52,7 @@ export default {
 
     return {
       repartitionConfig,
-      isUserLogged,
-      kpi
+      isUserLogged
     };
   }
 };

@@ -1,18 +1,15 @@
-import JiraProvider from "@/providers/jira/JiraProvider";
-import { SprintRepository } from "@/components/report-generator/repository/SprintRepository";
+import { SprintRepository } from "@/repositories/SprintRepository";
 import {
   Sprint,
   SprintStories
-} from "@/components/report-generator/model/SprintStories";
-import { SprintService } from "@/components/report-generator/service/sprint/Sprint.service";
+} from "@/components/report-generator/model/Sprint";
+import { SprintService } from "@/commons/services/Sprint.service";
 
 export default class SprintGeneratorService {
   private sprintRepository: SprintRepository;
-  private jiraProvider: JiraProvider;
   private sprintService: SprintService;
 
   constructor() {
-    this.jiraProvider = new JiraProvider();
     this.sprintRepository = new SprintRepository();
     this.sprintService = new SprintService();
   }
@@ -22,10 +19,14 @@ export default class SprintGeneratorService {
     const sprintStories = await this.getSprintStories(login, password);
     return {
       sprintStories,
-      sprintBacklog: this.sprintService.getSprintBacklogPoints(sprintStories),
-      remain: this.sprintService.getSprintRemainingPoints(sprintStories),
-      done: this.sprintService.getDonePoints(sprintStories),
-      wip: this.sprintService.getWipPoints(sprintStories)
+      sprintBacklog: this.sprintService.getSprintBacklogFromSprintStories(
+        sprintStories
+      ),
+      remain: this.sprintService.getSprintRemainingPointsFromSprintStories(
+        sprintStories
+      ),
+      done: this.sprintService.getDonePointsFromSprintStories(sprintStories),
+      wip: this.sprintService.getWipPointsFromSprintStories(sprintStories)
     };
   }
 

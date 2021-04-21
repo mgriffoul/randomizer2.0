@@ -25,7 +25,8 @@ export interface Story {
   status: StoryStatus | undefined;
   storyType: StoryType | undefined;
   // customfield_10004
-  storyPoint?: number | null | undefined;
+  storyPoint?: number;
   // customfield_11561
-  refinedStoryPoint?: number | null | undefined;
+  refinedStoryPoint?: number;
+  sprintName?: string;
 }

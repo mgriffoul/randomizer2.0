@@ -1,8 +1,5 @@
 import JiraIssueMapper from "./JiraIssueMapper";
-import {
-  StoryStatus,
-  StoryType
-} from "@/components/report-generator/model/Story";
+import { StoryStatus, StoryType } from "@/repositories/model/Story";
 
 const jiraIssue1 = {
   id: "11111",
@@ -16,7 +13,10 @@ const jiraIssue1 = {
       name: "Bug"
     },
     summary: "Les modales du FO ne se superposent pas correctement",
-    customfield_10004: 3
+    customfield_10004: 3,
+    sprint: {
+      name: "name1"
+    }
   }
 };
 const jiraIssuesMock = [
@@ -33,7 +33,10 @@ const jiraIssuesMock = [
         name: "Story"
       },
       summary: "Les driver ne savent pas conduire",
-      customfield_10004: 1
+      customfield_10004: 1,
+      sprint: {
+        name: "name2"
+      }
     }
   },
   {
@@ -48,7 +51,10 @@ const jiraIssuesMock = [
         name: "Technical story"
       },
       summary: "Afficher des trucs sur les machins",
-      customfield_10004: 2
+      customfield_10004: 2,
+      sprint: {
+        name: "name3"
+      }
     }
   }
 ];
@@ -91,6 +97,7 @@ describe("StoriesMapper should", () => {
     expect(result[0].storyType).toEqual(StoryType.BUG);
     expect(result[0].storyPoint).toEqual(3);
     expect(result[0].refinedStoryPoint).toEqual(5);
+    expect(result[0].sprintName).toEqual("name1");
 
     expect(result[1].status).toEqual(StoryStatus.WIP);
     expect(result[1].key).toEqual("ART-2222");
@@ -99,6 +106,7 @@ describe("StoriesMapper should", () => {
     expect(result[1].storyType).toEqual(StoryType.FUNCTIONAL);
     expect(result[1].storyPoint).toEqual(1);
     expect(result[1].refinedStoryPoint).toEqual(3);
+    expect(result[1].sprintName).toEqual("name2");
 
     expect(result[2].status).toEqual(StoryStatus.DONE);
     expect(result[2].key).toEqual("ART-3333");
@@ -107,5 +115,6 @@ describe("StoriesMapper should", () => {
     expect(result[2].storyType).toEqual(StoryType.TECHNICAL);
     expect(result[2].storyPoint).toEqual(2);
     expect(result[2].refinedStoryPoint).toEqual(2);
+    expect(result[2].sprintName).toEqual("name3");
   });
 });

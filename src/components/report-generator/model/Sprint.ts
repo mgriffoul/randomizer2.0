@@ -1,8 +1,6 @@
-import { Story } from "@/components/report-generator/model/Story";
+import { Story } from "@/repositories/model/Story";
 
 export type SprintKey = "functionalStories" | "technicalStories" | "bugs";
-
-export type SprintStories = { [key in SprintKey]: Story[] };
 
 export interface Sprint {
   sprintStories: SprintStories;
@@ -12,3 +10,5 @@ export interface Sprint {
   wip: number;
   sprintName?: string;
 }
+
+export type SprintStories = { [key in SprintKey]: Story[] };

@@ -1,10 +1,6 @@
-import {
-  Story,
-  StoryStatus,
-  StoryType
-} from "@/components/report-generator/model/Story";
-import { SprintStories } from "@/components/report-generator/model/SprintStories";
-import { SprintService } from "@/components/report-generator/service/sprint/Sprint.service";
+import { Story, StoryStatus, StoryType } from "@/repositories/model/Story";
+import { SprintStories } from "@/components/report-generator/model/Sprint";
+import { SprintService } from "@/commons/services/Sprint.service";
 
 describe("SprintService : ", () => {
   const story1: Story = {
@@ -106,7 +102,7 @@ describe("SprintService : ", () => {
     };
 
     // When
-    const result = sprintService.getSprintBacklogPoints(sprint);
+    const result = sprintService.getSprintBacklogFromSprintStories(sprint);
 
     // Then
     expect(result).toEqual(11);
@@ -121,10 +117,12 @@ describe("SprintService : ", () => {
     };
 
     // When
-    const result = sprintService.getSprintRemainingPoints(sprint);
+    const result = sprintService.getSprintRemainingPointsFromSprintStories(
+      sprint
+    );
 
     // Then
-    expect(result).toEqual(1);
+    expect(result).toEqual(4);
   });
 
   it("getDonePoints should return total of done points", () => {
@@ -144,7 +142,7 @@ describe("SprintService : ", () => {
     };
 
     // When
-    const result = sprintService.getDonePoints(sprintStories);
+    const result = sprintService.getDonePointsFromSprintStories(sprintStories);
 
     // Then
     expect(result).toEqual(3);

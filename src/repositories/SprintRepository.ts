@@ -1,6 +1,6 @@
-import JiraProvider from "../../../providers/jira/JiraProvider";
+import JiraProvider from "../providers/jira/JiraProvider";
 import { AxiosResponse } from "axios";
-import { Story } from "@/components/report-generator/model/Story";
+import { Story } from "@/repositories/model/Story";
 
 export class SprintRepository {
   private jiraProvider: JiraProvider;

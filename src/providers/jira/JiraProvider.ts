@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import JiraIssueMapper from "./mapper/JiraIssueMapper";
-import { Story } from "@/components/report-generator/model/Story";
+import { Story } from "@/repositories/model/Story";
 
 export default class JiraProvider {
   private jiraIssueMapper: JiraIssueMapper;

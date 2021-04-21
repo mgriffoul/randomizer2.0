@@ -1,8 +1,4 @@
-import {
-  Story,
-  StoryStatus,
-  StoryType
-} from "@/components/report-generator/model/Story";
+import { Story, StoryStatus, StoryType } from "@/repositories/model/Story";
 import { JiraIssue } from "@/providers/jira/model/JiraIssue";
 
 export default class JiraIssueMapper {
@@ -14,7 +10,8 @@ export default class JiraIssueMapper {
       storyPoint: jiraIssue.fields.customfield_10004,
       refinedStoryPoint: jiraIssue.fields?.customfield_11561,
       status: JiraIssueMapper.getStoryStatus(jiraIssue.fields.status.name),
-      storyType: JiraIssueMapper.getStoryType(jiraIssue.fields.issuetype.name)
+      storyType: JiraIssueMapper.getStoryType(jiraIssue.fields.issuetype.name),
+      sprintName: jiraIssue.fields?.sprint?.name
     };
     return story;
   }
@@ -42,7 +39,7 @@ export default class JiraIssueMapper {
   private static getStoryStatus(statusName: string): StoryStatus {
     if (statusName === "Dev in progress") {
       return StoryStatus.WIP;
-    } else if (statusName === "Terminé") {
+    } else if (statusName === "Terminé" || statusName === "Dev done") {
       return StoryStatus.DONE;
     } else {
       return StoryStatus.TODO;
