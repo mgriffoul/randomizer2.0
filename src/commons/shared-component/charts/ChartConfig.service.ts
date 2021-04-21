@@ -29,6 +29,7 @@ export default class ChartConfigService {
         ]
       },
       options: {
+        aspectRatio: 4,
         plugins: {
           legend: {
             title: {
